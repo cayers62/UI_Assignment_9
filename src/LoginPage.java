@@ -8,7 +8,7 @@ public class LoginPage {
         // Create frame
         JFrame frame = new JFrame("User Authentication Portal");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 250);
+        frame.setSize(500, 300);
         frame.setLayout(null);
         frame.getContentPane().setBackground(Color.MAGENTA); // Set background color to purple
 
@@ -47,13 +47,42 @@ public class LoginPage {
         loginButton.setBounds(150, 170, 100, 30);
         frame.add(loginButton);
 
+        JLabel messageLabel = new JLabel("");
+        messageLabel.setBounds(150, 220, 250, 25);
+        frame.add(messageLabel);
+
+        // Stored credentials in arrays
+        String[] usernames = {"user1", "admin"};
+        String[] passwords = {"pass123", "adminpass"};
+
         // Add ActionListener to the login button
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String username = usernameField.getText(); // Retrieve text from username field
-                char[] password = passwordField.getPassword(); // Retrieve password securely
-                JOptionPane.showMessageDialog(frame, "Username: " + username +"\nPassword: " + new  String(password));
+                String username = usernameField.getText();
+                String password = new String(passwordField.getPassword());
+                boolean authenticated = false;
+
+                // Empty field validation
+                if (username.isEmpty() || password.isEmpty()) {
+                    messageLabel.setText("Fields cannot be empty!");
+                    messageLabel.setForeground(Color.ORANGE);
+                    return;
+                }
+                // Check credentials
+                for (int i = 0; i < usernames.length; i++) {
+                    if (username.equals(usernames[i]) && password.equals(passwords[i])) {
+                        authenticated = true;
+                        break;
+                    }
+                }
+                // Update JLabel based on authentication result
+                if (authenticated) {
+                    messageLabel.setText("Successfully logged in!");
+                    messageLabel.setForeground(Color.GREEN);
+                } else {
+                    messageLabel.setText("Incorrect username/password.");
+                    messageLabel.setForeground(Color.WHITE);}
             }
         });
 
